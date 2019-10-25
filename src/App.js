@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {lazy, Suspense} from 'react';
 import './App.css';
+import {connect} from "react-redux";
+import * as actionCreators from './Store/actionCreators.js';
+import Items from "./Containers/Items/Items";
+// import OneItem from "./Components/OneItem/OneItem";
+import {Redirect, Route} from 'react-router-dom';
+import Spinner from "./Components/Spinner/Spinner";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const OneItem = lazy(() => import( "./Components/OneItem/OneItem"));
+
+class App extends React.Component {
+
+
+    render() {
+
+        return (
+
+            <Suspense fallback={<Spinner/>}>
+                <Route path='/Item' exact component={OneItem}/>
+                <Route path='/' exact component={Items}/>
+                <Redirect axact to="/"/>
+            </Suspense>
+
+        );
+    }
 }
 
-export default App;
+
+const mapStateToProps = state => {
+    return {
+        items: state.items,
+        err:state.err
+
+    }
+};
+const mapDispatchToProps = dispatch => {
+    return {
+        getInitialItems: () => dispatch(actionCreators.getInitialItems()),
+        getMoreItems: () => dispatch(actionCreators.getMoreItems()),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
