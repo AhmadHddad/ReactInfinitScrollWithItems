@@ -33,6 +33,7 @@
     text-transform: capitalize;
     font-family: Lato;
     transition: 0.3s;
+    cursor: pointer;
 }
 
 
