@@ -45,11 +45,9 @@ const reducer = (state = initialState, action) => {
                 err:action.err
             };
 
-
         default:
-            return {
-                ...state
-            }
+            return state
+
     }
 
 };
